@@ -1,11 +1,7 @@
-from typing import Optional
-import twitchio
 from twitchio.ext import commands
 from twitchio.ext import routines
 import sqlite3
-import requests
 
-from twitchio.ext.commands.core import Context
 
 con = sqlite3.connect("Stats.db")
 cur = con.cursor()
