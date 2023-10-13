@@ -1,6 +1,5 @@
 from twitchio.ext import commands
 from twitchio.ext import routines
-import sqlite3
 import pymysql
 
 con = pymysql.connect(
