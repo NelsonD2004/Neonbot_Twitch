@@ -1,11 +1,17 @@
 from twitchio.ext import commands
 from twitchio.ext import routines
 import sqlite3
+import pymysql
 
+con = pymysql.connect(
+    host="db-mfl-01.sparkedhost.us",
+    port=3306,
+    user="u109224_Krhr5CV2M2",
+    passwd="LzwM5tsReqzPH^1I1+@@XA2A",
+    database="s109224_Bot",
+)
 
-con = sqlite3.connect("Stats.db")
 cur = con.cursor()
-# new change
 
 
 @routines.routine(minutes=0.9)
