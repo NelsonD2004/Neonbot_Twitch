@@ -73,10 +73,10 @@ class Bot(commands.Bot):
             if message.content == "!leaderboard" or message.content == "!rank":
                 pass
             else:
-                point = cur.execute(
+                cur.execute(
                     f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
                 )
-                result = point.fetchone()
+                result = cur.fetchone()
 
                 if result is None:
                     cur.execute(
