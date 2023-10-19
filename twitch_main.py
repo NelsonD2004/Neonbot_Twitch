@@ -18,13 +18,13 @@ async def auto_stream_check():
     live = await bot.fetch_streams(user_ids=["803300101"], type="all")
     if live:
         try:
-            cur.execute(f"SELECT Date FROM Live_Info ORDER BY Entry DESC LIMIT 1")
-            latest_date = cur.fetchone()
+            cur.execute(f"SELECT Title FROM Live_Info ORDER BY Entry DESC LIMIT 1")
+            latest_name = cur.fetchone()
         except Exception as e:
             print(e)
-            latest_date = "not live"
+            latest_name = "not live"
         try:
-            if str(latest_date[0]) == str(live[0].started_at):
+            if str(latest_name[0]) == str(live[0].title):
                 cur.execute(
                     f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Date = '{live[0].started_at}'"
                 )
