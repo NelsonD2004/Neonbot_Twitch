@@ -82,22 +82,30 @@ class Bot(commands.Bot):
                 pass
             else:
                 cur.execute(
-                    f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
+                    f"SELECT TwitchName FROM Economy WHERE TwitchID = {message.author.id}"
                 )
-                result = cur.fetchone()
+                authorid = cur.fetchone()
+                cur.execute(
+                    f"SELECT TwitchName FROM Economy WHERE TwitchName = {message.author.name}"
+                )
+                authorname = cur.fetchone()
 
-                if result is None:
+                if int(authorid) == 0 and authorname is None:
                     cur.execute(
-                        f"INSERT INTO Economy (TwitchName, DiscordID, Potatoes) VALUES ('{message.author.name}', {0}, {1})"
+                        f"INSERT INTO Economy (TwitchName, DiscordID, Potatoes, TwitchID) VALUES ('{message.author.name}', {0}, {1}, {message.author.id})"
                     )
                     con.commit()
-                else:
+                if int(authorid) == 0 and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET Potatoes = Potatoes + {1} WHERE TwitchName = '{message.author.name}'"
+                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = {message.author.name}"
                     )
                     con.commit()
 
-        print(message.author.id)
+                if int(authorid) != 0 and authorname is not None:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes + {1} WHERE TwitchID = {message.author.id}"
+                    )
+                    con.commit()
 
         await self.handle_commands(message)
 
@@ -122,7 +130,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def bal(self, ctx: commands.Context):
         cur.execute(
-            f"SELECT Potatoes FROM Economy WHERE TwitchName = '{ctx.message.author.name}'"
+            f"SELECT Potatoes FROM Economy WHERE TwitchID = '{ctx.message.author.id}'"
         )
         result = cur.fetchone()
         await ctx.send(
