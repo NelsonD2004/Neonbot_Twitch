@@ -25,7 +25,9 @@ async def get_newest_video():
     data = json.loads(response.text)
     video_title = data["items"][0]["snippet"]["title"]
     video_link = f"https://www.youtube.com/watch?v={data['items'][0]['id']['videoId']}"
-    await channel.send(f"Check out tatox3's newest video! {video_title} {video_link}")
+    await channel.send(
+        f'Check out tatox3s newest video! "{video_title}"\n\n "{video_link}"'
+    )
 
 
 @routines.routine(minutes=0.9)
@@ -84,6 +86,7 @@ class Bot(commands.Bot):
         print(f"Logged in as | {self.nick}")
         print(f"User id is | {self.user_id}")
         auto_stream_check.start()
+        get_newest_video.start()
 
     async def event_message(self, message):
         if message.echo:
