@@ -17,17 +17,23 @@ cur = con.cursor()
 
 @routines.routine(minutes=30.0)
 async def get_newest_video():
-    channel = bot.get_channel("Tatox3_")
-    channel_id = "UCwTGi24vIslaJYW5WMrB5UA"
-    api_key = "AIzaSyBHRmE3SIvxF5Xt0ZbR7hTBPs8YBt04i9o"
-    url = f"https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults=1"
-    response = requests.get(url)
-    data = json.loads(response.text)
-    video_title = data["items"][0]["snippet"]["title"]
-    video_link = f"https://www.youtube.com/watch?v={data['items'][0]['id']['videoId']}"
-    await channel.send(
-        f'Check out tatox3s newest video! "{video_title}"\n\n "{video_link}"'
-    )
+    live = await bot.fetch_streams(user_ids=["803300101"], type="all")
+    if live:
+        channel = bot.get_channel("Tatox3_")
+        channel_id = "UCwTGi24vIslaJYW5WMrB5UA"
+        api_key = "AIzaSyBHRmE3SIvxF5Xt0ZbR7hTBPs8YBt04i9o"
+        url = f"https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults=1"
+        response = requests.get(url)
+        data = json.loads(response.text)
+        video_title = data["items"][0]["snippet"]["title"]
+        video_link = (
+            f"https://www.youtube.com/watch?v={data['items'][0]['id']['videoId']}"
+        )
+        await channel.send(
+            f'Check out tatox3s newest video! "{video_title}"\n\n "{video_link}"'
+        )
+    else:
+        return
 
 
 @routines.routine(minutes=0.9)
