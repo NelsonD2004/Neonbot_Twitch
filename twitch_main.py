@@ -97,6 +97,8 @@ class Bot(commands.Bot):
                     )
                     con.commit()
 
+        print(message.author.id)
+
         await self.handle_commands(message)
 
     @commands.command()
