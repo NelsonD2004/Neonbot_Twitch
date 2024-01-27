@@ -30,7 +30,7 @@ async def get_newest_video():
             f"https://www.youtube.com/watch?v={data['items'][0]['id']['videoId']}"
         )
         await channel.send(
-            f'Check out tatox3s newest video! "{video_title}"\n\n "{video_link}"'
+            f'Check out tatox3s newest video! "{video_title}"\n\n ({video_link})'
         )
     else:
         return
@@ -110,22 +110,22 @@ class Bot(commands.Bot):
                 )
                 authorid = cur.fetchone()
                 cur.execute(
-                    f"SELECT TwitchName FROM Economy WHERE TwitchName = {message.author.name}"
+                    f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
                 )
                 authorname = cur.fetchone()
 
-                if int(authorid) == 0 and authorname is None:
+                if authorid is None and authorname is None:
                     cur.execute(
                         f"INSERT INTO Economy (TwitchName, DiscordID, Potatoes, TwitchID) VALUES ('{message.author.name}', {0}, {1}, {message.author.id})"
                     )
                     con.commit()
-                if int(authorid) == 0 and authorname is not None:
+                if authorid is None and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = {message.author.name}"
+                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = '{message.author.name}'"
                     )
                     con.commit()
 
-                if int(authorid) != 0 and authorname is not None:
+                if authorid is not None and authorname is not None:
                     cur.execute(
                         f"UPDATE Economy SET Potatoes = Potatoes + {1} WHERE TwitchID = {message.author.id}"
                     )
