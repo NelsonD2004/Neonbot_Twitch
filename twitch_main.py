@@ -174,12 +174,12 @@ class Bot(commands.Bot):
     @commands.command()
     async def rank(self, ctx: commands.Context):
         count = 0
-        cur.execute(f"SELECT TwitchName, Potatoes FROM Economy ORDER BY Potatoes DESC")
+        cur.execute(f"SELECT TwitchID, Potatoes FROM Economy ORDER BY Potatoes DESC")
         result = cur.fetchall()
 
         for i in result:
             count += 1
-            if i[0] == ctx.author.name:
+            if i[0] == ctx.author.id:
                 await ctx.send(
                     f"{ctx.author.mention} you are rank #{count} on the potato leaderboard with {i[1]} potatoes"
                 )
