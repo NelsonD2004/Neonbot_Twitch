@@ -30,7 +30,7 @@ async def get_newest_video():
             f"https://www.youtube.com/watch?v={data['items'][0]['id']['videoId']}"
         )
         await channel.send(
-            f'Check out tatox3s newest video! "{video_title}"\n\n ({video_link})'
+            f'Check out tatox3s newest video! "{video_title}"\n\n ( {video_link} )'
         )
     else:
         return
