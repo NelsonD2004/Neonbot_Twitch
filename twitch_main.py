@@ -1,8 +1,6 @@
 from twitchio.ext import commands
 from twitchio.ext import routines
 import pymysql
-import requests
-import json
 
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
