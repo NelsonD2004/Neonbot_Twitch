@@ -140,13 +140,17 @@ class Bot(commands.Bot):
                 f"INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}')"
             )
             con.commit()
+            cur.execute(f"SELECT * FROM TTS")
+            queue = len(cur.fetchall())
+            await ctx.send(
+                f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+            )
         else:
             await ctx.send(
                 f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>'"
             )
-
-    # else:
-    # await ctx.send("You cannot do this command while Tatox3 is offline.")
+        # else:
+        # await ctx.send("You cannot do this command while Tatox3 is offline.")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
