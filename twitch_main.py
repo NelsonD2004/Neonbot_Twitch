@@ -128,7 +128,7 @@ class Bot(commands.Bot):
             await ctx.send("Command is on cooldown!")
 
     @commands.command()
-    async def tts(self, ctx: commands.Context, message):
+    async def tts(self, ctx: commands.Context, *, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         # if live:
         if message:

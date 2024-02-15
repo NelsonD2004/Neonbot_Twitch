@@ -1,9 +1,6 @@
 import pymysql
 import pyttsx3
 
-engine = pyttsx3.init()
-engine.say("Testing to see if this works")
-engine.runAndWait()
 
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
@@ -17,13 +14,22 @@ cur = con.cursor()
 
 
 ###
+engine = pyttsx3.init()
+engine.setProperty("rate", 100)
 
 
 def main():
-    cur.execute(f"SELECT * FROM TTS ORDER BY id ASC")
-    queue = cur.fetchall()
+    cur.execute(f"SELECT Message, id FROM TTS ORDER BY id ASC")
+    queue = cur.fetchone()
 
     if queue:
-        print(queue)
-        print(queue[0])
-        print(queue[0][-2])
+        engine.say(queue[0])
+        engine.runAndWait()
+        cur.execute(f"DELETE FROM TTS WHERE id = {queue[1]}")
+        con.commit()
+
+    else:
+        pass
+
+
+main()
