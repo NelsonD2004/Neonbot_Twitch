@@ -130,22 +130,23 @@ class Bot(commands.Bot):
     @commands.command()
     async def tts(self, ctx: commands.Context, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
-        if live:
-            if message:
-                cur.execute(
-                    f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
-                )
-                con.commit()
-                cur.execute(
-                    f"INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}')"
-                )
-                con.commit()
-            else:
-                await ctx.send(
-                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>'"
-                )
+        # if live:
+        if message:
+            cur.execute(
+                f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
+            )
+            con.commit()
+            cur.execute(
+                f"INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}')"
+            )
+            con.commit()
         else:
-            await ctx.send("You cannot do this command while Tatox3 is offline.")
+            await ctx.send(
+                f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>'"
+            )
+
+    # else:
+    # await ctx.send("You cannot do this command while Tatox3 is offline.")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
