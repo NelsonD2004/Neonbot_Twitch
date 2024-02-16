@@ -141,7 +141,7 @@ class Bot(commands.Bot):
                 )
                 con.commit()
                 cur.execute(
-                    f'INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}"'
+                    f"INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}')"
                 )
                 con.commit()
                 cur.execute(f"SELECT * FROM TTS")
