@@ -134,9 +134,8 @@ class Bot(commands.Bot):
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
         )
         potatoes = cur.fetchone()
-        print(potatoes)
         if live:
-            if message and int(potatoes) > 0:
+            if message and int(potatoes[0]) > 0:
                 cur.execute(
                     f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
                 )
