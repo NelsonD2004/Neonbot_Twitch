@@ -130,8 +130,13 @@ class Bot(commands.Bot):
     @commands.command()
     async def tts(self, ctx: commands.Context, *, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
+        cur.execute(
+            f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+        )
+        potatoes = cur.fetchone()
+        print(potatoes)
         if live:
-            if message:
+            if message and int(potatoes) > 0:
                 cur.execute(
                     f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
                 )
@@ -147,7 +152,7 @@ class Bot(commands.Bot):
                 )
             else:
                 await ctx.send(
-                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>'"
+                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>' and that you have 100 potatoes"
                 )
         else:
             await ctx.send("You cannot do this command while Tatox3 is offline.")
