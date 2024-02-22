@@ -109,23 +109,13 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    @commands.command()
-    @commands.cooldown(rate=1, per=90, bucket=commands.Bucket.channel)
-    async def whiff(self, ctx: commands.Context):
-        live = await bot.fetch_streams(user_ids=["803300101"], type="live")
-        if live:
-            point = cur.execute("SELECT Amount FROM Whiff")
-            result = point.fetchone()
-            await ctx.send(f"Henry has been caught whiffing {result[0]} times!")
-
-            cur.execute(f"UPDATE Whiff SET Amount = Amount + {1}")
-            con.commit()
-        else:
-            await ctx.send("You cannot run this command while henry is offline!")
+    """
+    Error Handling Func
 
     async def event_command_error(self, ctx, error: Exception) -> None:
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send("Command is on cooldown!")
+    """
 
     @commands.command()
     async def tts(self, ctx: commands.Context, *, message):
