@@ -75,7 +75,7 @@ class Bot(commands.Bot):
             return
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         if live:
-            if message.author.name == "fossabot":
+            if message.author.name == "fossabot" or message.author.name == "streamlabs":
                 return
 
             if message.content == "!leaderboard" or message.content == "!rank":
