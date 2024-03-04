@@ -45,12 +45,12 @@ async def auto_stream_check():
                 con.commit()
             else:
                 cur.execute(
-                    f"INSERT INTO Live_Info (Entry, Live, Title, Game, Date, Noti) VALUES ({latest_entry + 1}, 'True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                    f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
                 )
                 con.commit()
         except:
             cur.execute(
-                f"INSERT INTO Live_Info (Entry, Live, Title, Game, Date, Noti) VALUES ({latest_entry + 1}, 'True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
             )
             con.commit()
     else:
