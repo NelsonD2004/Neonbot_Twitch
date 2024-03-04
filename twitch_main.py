@@ -48,6 +48,8 @@ async def auto_stream_check():
                 )
                 con.commit()
         except:
+            print((live[0].title))
+            print(type(live[0].title))
             cur.execute(
                 f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
             )
