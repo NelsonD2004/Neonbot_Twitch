@@ -36,7 +36,7 @@ async def auto_stream_check():
 
             if str(latest[0]) == "True" and live:
                 cur.execute(
-                    f"UPDATE Live_Info SET Title = {str(live[0].title)} WHERE Date = '{live[0].started_at}'"
+                    f'UPDATE Live_Info SET Title = "{live[0].title}" WHERE Date = "{live[0].started_at}"'
                 )
                 con.commit()
                 cur.execute(
@@ -45,12 +45,12 @@ async def auto_stream_check():
                 con.commit()
             else:
                 cur.execute(
-                    f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                    f'INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ("True", "{live[0].title}", "{live[0].game_name}", "{live[0].started_at}", "False")'
                 )
                 con.commit()
         except:
             cur.execute(
-                f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                f'INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ("True", "{live[0].title}", "{live[0].game_name}", "{live[0].started_at}", "False")'
             )
             con.commit()
     else:
