@@ -22,6 +22,8 @@ async def auto_stream_check():
             latest = cur.fetchone()
             cur.execute(f"SELECT Title FROM Live_Info ORDER BY Entry DESC LIMIT 1")
             latest_title = cur.fetchone()
+            cur.execute(f"SELECT Entry FROM Live_Info ORDER BY Entry DESC LIMIT 1")
+            latest_entry = cur.fetchone()
         except Exception as e:
             print(e)
             latest = "not live"
@@ -42,16 +44,13 @@ async def auto_stream_check():
                 )
                 con.commit()
             else:
-                print(str(live[0].title))
                 cur.execute(
-                    f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                    f"INSERT INTO Live_Info (Entry, Live, Title, Game, Date, Noti) VALUES ({latest_entry + 1}, 'True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
                 )
                 con.commit()
         except:
-            print((live[0].title))
-            print(type(live[0].title))
             cur.execute(
-                f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                f"INSERT INTO Live_Info (Entry, Live, Title, Game, Date, Noti) VALUES ({latest_entry + 1}, 'True', {str(live[0].title)}, '{live[0].game_name}', '{live[0].started_at}', 'False')"
             )
             con.commit()
     else:
