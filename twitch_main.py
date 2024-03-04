@@ -28,7 +28,7 @@ async def auto_stream_check():
         try:
             if str(latest[0]) == "False" and live[0].title == str(latest_title[0]):
                 cur.execute(
-                    f"UPDATE Live_Info SET Live = '{True}' WHERE Title = '{str(latest_title[0])}'"
+                    f"UPDATE Live_Info SET Live = '{True}' WHERE Title = {str(latest_title[0])}"
                 )
                 con.commit()
 
