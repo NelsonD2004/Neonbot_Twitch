@@ -22,6 +22,8 @@ async def auto_stream_check():
             latest = cur.fetchone()
             cur.execute(f"SELECT Title FROM Live_Info ORDER BY Entry DESC LIMIT 1")
             latest_title = cur.fetchone()
+            cur.execute(f"SELECT Entry FROM Live_Info ORDER BY Entry DESC LIMIT 1")
+            latestEntry = cur.fetchone()
         except Exception as e:
             print(e)
             latest = "not live"
@@ -34,11 +36,11 @@ async def auto_stream_check():
 
             if str(latest[0]) == "True" and live:
                 cur.execute(
-                    f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Date = '{live[0].started_at}'"
+                    f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Entry = {latestEntry[0]}"
                 )
                 con.commit()
                 cur.execute(
-                    f"UPDATE Live_Info SET Game = '{live[0].game_name}' WHERE Date = '{live[0].started_at}'"
+                    f"UPDATE Live_Info SET Game = '{live[0].game_name}' WHERE Entry = {latestEntry[0]}"
                 )
                 con.commit()
             else:
