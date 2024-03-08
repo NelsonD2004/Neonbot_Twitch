@@ -36,11 +36,11 @@ async def auto_stream_check():
 
             if str(latest[0]) == "True" and live:
                 cur.execute(
-                    f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Title = {str(latest_title[0])}"
+                    f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Title = '{str(latest_title[0])}'"
                 )
                 con.commit()
                 cur.execute(
-                    f"UPDATE Live_Info SET Game = '{live[0].game_name}' WHERE Title = {str(latest_title[0])}"
+                    f"UPDATE Live_Info SET Game = '{live[0].game_name}' WHERE Title = '{str(latest_title[0])}'"
                 )
                 con.commit()
             else:
