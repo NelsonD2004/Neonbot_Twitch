@@ -121,7 +121,7 @@ class Bot(commands.Bot):
     """
 
     @commands.command()
-    async def tts(self, ctx: commands.Context, *, message):
+    async def tts(self, ctx: commands.Context, voice, *, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
@@ -134,7 +134,7 @@ class Bot(commands.Bot):
                 )
                 con.commit()
                 cur.execute(
-                    f"INSERT INTO TTS (TwitchName, TwitchID, Message) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}')"
+                    f"INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}', '{voice}')"
                 )
                 con.commit()
                 cur.execute(f"SELECT * FROM TTS")
@@ -144,7 +144,7 @@ class Bot(commands.Bot):
                 )
             else:
                 await ctx.send(
-                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <message>' and that you have 100 potatoes"
+                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
                 )
         else:
             await ctx.send("You cannot do this command while Tatox3 is offline.")
