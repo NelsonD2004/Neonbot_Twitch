@@ -121,6 +121,12 @@ class Bot(commands.Bot):
     """
 
     @commands.command()
+    async def voices(self, ctx: commands.Context):
+        await ctx.send(
+            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair)"
+        )
+
+    @commands.command()
     async def tts(self, ctx: commands.Context, voice, *, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
