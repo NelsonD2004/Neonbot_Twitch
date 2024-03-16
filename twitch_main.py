@@ -127,6 +127,7 @@ class Bot(commands.Bot):
         )
 
     @commands.command()
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def tts(self, ctx: commands.Context, voice, *, message):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
