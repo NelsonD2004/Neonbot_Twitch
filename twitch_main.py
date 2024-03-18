@@ -136,7 +136,13 @@ class Bot(commands.Bot):
         )
         potatoes = cur.fetchone()
         if live:
-            if voice not in ["henry", "mrbeast", "evw", "kratos", "aeonair"]:
+            if str(voice).lower() not in [
+                "henry",
+                "mrbeast",
+                "evw",
+                "kratos",
+                "aeonair",
+            ]:
                 cur.execute(
                     f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No")'
                 )
@@ -146,24 +152,25 @@ class Bot(commands.Bot):
                 await ctx.send(
                     f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
                 )
-            if message and int(potatoes[0]) >= 100:
-                cur.execute(
-                    f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
-                )
-                con.commit()
-                cur.execute(
-                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "{voice}")'
-                )
-                con.commit()
-                cur.execute(f"SELECT * FROM TTS")
-                queue = len(cur.fetchall())
-                await ctx.send(
-                    f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
-                )
             else:
-                await ctx.send(
-                    f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
-                )
+                if message and int(potatoes[0]) >= 100:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+                    cur.execute(
+                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "{voice}")'
+                    )
+                    con.commit()
+                    cur.execute(f"SELECT * FROM TTS")
+                    queue = len(cur.fetchall())
+                    await ctx.send(
+                        f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+                    )
+                else:
+                    await ctx.send(
+                        f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
+                    )
         else:
             await ctx.send("You cannot do this command while Tatox3 is offline.")
 
