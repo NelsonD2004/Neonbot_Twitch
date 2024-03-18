@@ -82,14 +82,14 @@ class Bot(commands.Bot):
                 return
 
             if message.content == "!leaderboard" or message.content == "!rank":
-                pass
+                return
             else:
                 cur.execute(
                     f"SELECT TwitchName FROM Economy WHERE TwitchID = {message.author.id}"
                 )
                 authorid = cur.fetchone()
                 cur.execute(
-                    f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
+                    f"SELECT TwitchName FROM Economy WHERE TwitchName = {message.author.name}"
                 )
                 authorname = cur.fetchone()
 
@@ -100,13 +100,13 @@ class Bot(commands.Bot):
                     con.commit()
                 if authorid is None and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = '{message.author.name}'"
+                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = {message.author.name}"
                     )
                     con.commit()
 
                 if authorid is not None and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                        f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = {message.author.name} WHERE TwitchID = {message.author.id}"
                     )
                     con.commit()
 
@@ -173,6 +173,10 @@ class Bot(commands.Bot):
                     )
         else:
             await ctx.send("You cannot do this command while Tatox3 is offline.")
+
+    async def event_command_error(self, ctx, error: Exception) -> None:
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"{error}")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
