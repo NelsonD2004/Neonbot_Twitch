@@ -109,7 +109,7 @@ class Bot(commands.Bot):
                     or str(authorname[0]) != message.author.name
                 ):
                     cur.execute(
-                        f"UPDATE Economy SET TwitchName = {message.author.name} WHERE TwitchID = '{message.author.id}'"
+                        f"UPDATE Economy SET TwitchName = '{message.author.name}' WHERE TwitchID = '{message.author.id}'"
                     )
                     con.commit()
                 if authorid is not None and authorname is not None:
