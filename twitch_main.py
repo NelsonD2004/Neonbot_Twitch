@@ -138,7 +138,7 @@ class Bot(commands.Bot):
         if live:
             if voice not in ["henry", "mrbeast", "evw", "kratos", "aeonair"]:
                 cur.execute(
-                    f"INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}', 'No')"
+                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No")'
                 )
                 con.commit()
                 cur.execute(f"SELECT * FROM TTS")
@@ -152,7 +152,7 @@ class Bot(commands.Bot):
                 )
                 con.commit()
                 cur.execute(
-                    f"INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}', '{voice}')"
+                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "{voice}")'
                 )
                 con.commit()
                 cur.execute(f"SELECT * FROM TTS")
