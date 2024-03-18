@@ -89,7 +89,7 @@ class Bot(commands.Bot):
                 )
                 authorid = cur.fetchone()
                 cur.execute(
-                    f"SELECT TwitchName FROM Economy WHERE TwitchName = {message.author.name}"
+                    f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
                 )
                 authorname = cur.fetchone()
 
@@ -100,13 +100,13 @@ class Bot(commands.Bot):
                     con.commit()
                 if authorid is None and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = {message.author.name}"
+                        f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = '{message.author.name}'"
                     )
                     con.commit()
 
                 if authorid is not None and authorname is not None:
                     cur.execute(
-                        f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = {message.author.name} WHERE TwitchID = {message.author.id}"
+                        f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
                     )
                     con.commit()
 
