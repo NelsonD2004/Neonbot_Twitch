@@ -116,20 +116,22 @@ class Bot(commands.Bot):
                         f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = '{message.author.name}'"
                     )
                     con.commit()
-                if (
-                    authorid is not None
-                    and authorname is None
-                    or str(authorname[0]) != message.author.name
-                ):
+                if authorid is not None and authorname is None:
                     cur.execute(
                         f"UPDATE Economy SET TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
                     )
                     con.commit()
                 if authorid is not None and authorname is not None:
-                    cur.execute(
-                        f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
-                    )
-                    con.commit()
+                    if str(authorname[0]) != message.author.name:
+                        cur.execute(
+                            f"UPDATE Economy SET TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                        )
+                        con.commit()
+                    else:
+                        cur.execute(
+                            f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                        )
+                        con.commit()
 
         await self.handle_commands(message)
 
