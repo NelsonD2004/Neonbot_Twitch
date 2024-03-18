@@ -74,6 +74,19 @@ class Bot(commands.Bot):
         auto_stream_check.start()
 
     async def event_message(self, message):
+        if con is None:
+            try:
+                con = pymysql.connect(
+                    host="db-mfl-01.sparkedhost.us",
+                    port=3306,
+                    user="u109224_Krhr5CV2M2",
+                    passwd="LzwM5tsReqzPH^1I1+@@XA2A",
+                    database="s109224_Bot",
+                )
+
+                cur = con.cursor()
+            except pymysql.OperationalError:
+                print("Lost connection to the database.")
         if message.echo:
             return
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
