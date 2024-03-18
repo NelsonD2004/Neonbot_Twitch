@@ -129,12 +129,23 @@ class Bot(commands.Bot):
     @commands.command()
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def tts(self, ctx: commands.Context, voice, *, message):
+
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
         )
         potatoes = cur.fetchone()
         if live:
+            if voice not in ["henry", "mrbeast", "evw", "kratos", "aeonair"]:
+                cur.execute(
+                    f"INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ('{ctx.message.author.name}', {ctx.message.author.id}, '{message}', 'No')"
+                )
+                con.commit()
+                cur.execute(f"SELECT * FROM TTS")
+                queue = len(cur.fetchall())
+                await ctx.send(
+                    f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+                )
             if message and int(potatoes[0]) >= 100:
                 cur.execute(
                     f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
