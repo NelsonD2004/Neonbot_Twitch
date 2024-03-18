@@ -2,6 +2,8 @@ from twitchio.ext import commands
 from twitchio.ext import routines
 import pymysql
 
+global con
+global cur
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
     port=3306,
