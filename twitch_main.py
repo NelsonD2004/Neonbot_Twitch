@@ -2,8 +2,6 @@ from twitchio.ext import commands
 from twitchio.ext import routines
 import pymysql
 
-global con
-global cur
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
     port=3306,
@@ -76,6 +74,8 @@ class Bot(commands.Bot):
         auto_stream_check.start()
 
     async def event_message(self, message):
+        global con
+        global cur
         if con is None:
             try:
                 con = pymysql.connect(
