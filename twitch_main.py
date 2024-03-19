@@ -167,6 +167,9 @@ class Bot(commands.Bot):
                 "evw",
                 "kratos",
                 "aeonair",
+                "npesta",
+                "doggie",
+                "vit12",
             ]:
                 if int(potatoes[0]) >= 100:
                     cur.execute(
