@@ -148,7 +148,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
-            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair)"
+            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair, npesta, doggie, vit12"
         )
 
     @commands.command()
