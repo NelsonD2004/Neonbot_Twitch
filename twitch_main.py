@@ -214,6 +214,7 @@ class Bot(commands.Bot):
     async def event_command_error(self, ctx, error: Exception) -> None:
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"{error}")
+            return
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
