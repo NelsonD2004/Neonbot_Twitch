@@ -19,7 +19,6 @@ cur = con.cursor()
 async def monthly_check():
     day = datetime.date.today().day
     if day == 1:
-        # Insert Message
         cur.execute("DELETE FROM Activity")
         con.commit()
 
