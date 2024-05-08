@@ -187,14 +187,6 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    """
-    Error Handling Func
-
-    async def event_command_error(self, ctx, error: Exception) -> None:
-        if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send("Command is on cooldown!")
-    """
-
     @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
@@ -283,7 +275,7 @@ class Bot(commands.Bot):
         )
         result = cur.fetchall()
         await ctx.send(
-            f"""Potato Leaderboard | #1 {result[1][0]}: {result[1][1]} | #2 {result[2][0]}: {result[2][1]} | #3 {result[3][0]}: {result[3][1]} | #4 {result[4][0]}: {result[4][1]} | #5 {result[5][0]}: {result[5][1]}"""
+            f"Potato Leaderboard | #1 {result[1][0]}: {result[1][1]} | #2 {result[2][0]}: {result[2][1]} | #3 {result[3][0]}: {result[3][1]} | #4 {result[4][0]}: {result[4][1]} | #5 {result[5][0]}: {result[5][1]}"
         )
 
     @commands.command()
