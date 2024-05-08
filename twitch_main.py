@@ -283,7 +283,7 @@ class Bot(commands.Bot):
         )
         result = cur.fetchall()
         await ctx.send(
-            f"""Potato Leaderboard | #1 {result[0][0]}: {result[0][1]} | #2 {result[1][0]}: {result[1][1]} | #3 {result[2][0]}: {result[2][1]} | #4 {result[3][0]}: {result[3][1]} | #5 {result[4][0]}: {result[4][1]}"""
+            f"""Potato Leaderboard | #1 {result[1][0]}: {result[1][1]} | #2 {result[2][0]}: {result[2][1]} | #3 {result[3][0]}: {result[3][1]} | #4 {result[4][0]}: {result[4][1]} | #5 {result[5][0]}: {result[5][1]}"""
         )
 
     @commands.command()
@@ -293,11 +293,11 @@ class Bot(commands.Bot):
         result = cur.fetchall()
 
         for i in result:
-            count += 1
             if i[0] == int(ctx.author.id):
                 await ctx.send(
                     f"{ctx.author.mention} you are rank #{count} on the potato leaderboard with {i[1]} potatoes"
                 )
+            count += 1
 
     @commands.command()
     async def help(self, ctx: commands.Context):
