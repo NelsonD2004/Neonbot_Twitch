@@ -1,6 +1,8 @@
 from twitchio.ext import commands
 from twitchio.ext import routines
 import pymysql
+import datetime
+
 
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
@@ -13,6 +15,15 @@ con = pymysql.connect(
 cur = con.cursor()
 
 
+@routines.routine(hours=24)
+async def monthly_check():
+    day = datetime.date.today().day
+    if day == 1:
+        # Insert Message
+        cur.execute("DELETE FROM Activity")
+        con.commit()
+
+
 @routines.routine(minutes=0.9)
 async def auto_stream_check():
     live = await bot.fetch_streams(user_ids=["803300101"], type="all")
@@ -22,8 +33,6 @@ async def auto_stream_check():
             latest = cur.fetchone()
             cur.execute(f"SELECT Title FROM Live_Info ORDER BY Entry DESC LIMIT 1")
             latest_title = cur.fetchone()
-            cur.execute(f"SELECT Entry FROM Live_Info ORDER BY Entry DESC LIMIT 1")
-            latestEntry = cur.fetchone()
         except Exception as e:
             print(e)
             latest = "not live"
@@ -93,10 +102,10 @@ class Bot(commands.Bot):
             return
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         if live:
-            if message.author.name == "fossabot" or message.author.name == "streamlabs":
+            if message.content == "!leaderboard" or message.content == "!rank":
                 return
 
-            if message.content == "!leaderboard" or message.content == "!rank":
+            if message.author.name == "fossabot" or message.author.name == "streamlabs":
                 return
             else:
                 cur.execute(
@@ -107,22 +116,51 @@ class Bot(commands.Bot):
                     f"SELECT TwitchName FROM Economy WHERE TwitchName = '{message.author.name}'"
                 )
                 authorname = cur.fetchone()
+                cur.execute(
+                    f"SELECT TwitchName FROM Activity WHERE TwitchID = {message.author.id}"
+                )
+                activityAuthorID = cur.fetchone()
+                cur.execute(
+                    f"SELECT TwitchName FROM Activity WHERE TwitchName = '{message.author.name}'"
+                )
+                activityAuthorName = cur.fetchone()
 
+                # Economy unique entry
                 if authorid is None and authorname is None:
                     cur.execute(
                         f"INSERT INTO Economy (TwitchName, DiscordID, Potatoes, TwitchID) VALUES ('{message.author.name}', {0}, {1}, {message.author.id})"
                     )
                     con.commit()
+
+                # Activity unique entry
+                if activityAuthorID is None and activityAuthorName is None:
+                    cur.execute(
+                        f"INSERT INTO Activity (TwitchName, Potatoes, TwitchID) VALUES ('{message.author.name}', {1}, {message.author.id})"
+                    )
+                    con.commit()
+
+                # Economy twitchID update
                 if authorid is None and authorname is not None:
                     cur.execute(
                         f"UPDATE Economy SET TwitchID = {message.author.id} WHERE TwitchName = '{message.author.name}'"
                     )
                     con.commit()
+
+                # Economy twitch name update
                 if authorid is not None and authorname is None:
                     cur.execute(
                         f"UPDATE Economy SET TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
                     )
                     con.commit()
+
+                # Activity twitch name update
+                if activityAuthorID is not None and activityAuthorName is None:
+                    cur.execute(
+                        f"UPDATE Activity SET TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                    )
+                    con.commit()
+
+                # Economy potato addition
                 if authorid is not None and authorname is not None:
                     if str(authorname[0]) != message.author.name:
                         cur.execute(
@@ -132,6 +170,19 @@ class Bot(commands.Bot):
                     else:
                         cur.execute(
                             f"UPDATE Economy SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                        )
+                        con.commit()
+
+                # Activity potato addition
+                if activityAuthorID is not None and activityAuthorName is not None:
+                    if str(activityAuthorName[0]) != message.author.name:
+                        cur.execute(
+                            f"UPDATE Activity SET TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
+                        )
+                        con.commit()
+                    else:
+                        cur.execute(
+                            f"UPDATE Activity SET Potatoes = Potatoes + {1}, TwitchName = '{message.author.name}' WHERE TwitchID = {message.author.id}"
                         )
                         con.commit()
 
@@ -148,7 +199,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
-            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair, npesta, doggie, vit12"
+            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair, npesta, doggie, vit12)"
         )
 
     @commands.command()
