@@ -292,9 +292,9 @@ class Bot(commands.Bot):
                 )
             count += 1
 
-    @commands.command()
+    @commands.command(aliases=["g"])
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.user)
-    async def gamble(self, ctx: commands.Context, game, amount: int):
+    async def gamble(self, ctx: commands.Context, amount: int):
         rngOdds = random.choices(population=["Win", "Lose"])
         cur.execute(
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
@@ -311,7 +311,7 @@ class Bot(commands.Bot):
                 f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
             )
 
-        if str(game).lower() == "rng" and rngOdds[0] == "Win":
+        if rngOdds[0] == "Win":
             await ctx.send(
                 f"{ctx.message.author.mention} YOU WIN! {amount * 2} potatoes have been added to your account."
             )
@@ -319,7 +319,7 @@ class Bot(commands.Bot):
                 f"UPDATE Economy SET Potatoes = Potatoes + {amount * 2} WHERE TwitchID = {ctx.message.author.id}"
             )
             con.commit()
-        if rngOdds[0] == "Lose":
+        else:
             await ctx.send(f"{ctx.message.author.mention} You Lost! (Womp Womp)")
 
     async def event_command_error(self, ctx, error: Exception) -> None:
