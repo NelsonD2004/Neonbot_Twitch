@@ -333,12 +333,7 @@ class Bot(commands.Bot):
         for command in self.commands:
             commands_msg = "{}, {}".format(commands_msg, "!{}".format(command))
         commands_msg = commands_msg[2:]
-        await twio.User.send_whisper(
-            self.user_id,
-            token="oauth:wmufa00luq1684j03f4w6t3pywcsgd",
-            user_id=ctx.author.id,
-            message="Hello!",
-        )
+        await ctx.message.author.send("Hello!")
         await ctx.send(
             f"""{ctx.message.author.mention} {commands_msg} || To earn potatos (stream currency) just chat!"""
         )
