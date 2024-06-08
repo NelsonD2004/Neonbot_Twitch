@@ -3,7 +3,7 @@ from twitchio.ext import routines
 import pymysql
 import datetime
 from gambling import gamble
-
+import random
 
 con = pymysql.connect(
     host="db-mfl-01.sparkedhost.us",
@@ -293,7 +293,8 @@ class Bot(commands.Bot):
             count += 1
 
     @commands.command()
-    async def gamble(self, ctx: commands.Context, game: str, amount: int):
+    async def gamble(self, ctx: commands.Context, game, amount: int):
+        rngOdds = random.choices(population=["Win", "Lose"])
         cur.execute(
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
         )
@@ -309,8 +310,8 @@ class Bot(commands.Bot):
                 f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
             )
 
-        if str(game).lower() == "rng":
-            await ctx.send(f"{gamble.getRng()}")
+        if str(game).lower() is "rng":
+            await ctx.send(f"{rngOdds}")
 
     @commands.command()
     async def help(self, ctx: commands.Context):
