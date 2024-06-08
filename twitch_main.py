@@ -2,6 +2,7 @@ from twitchio.ext import commands
 from twitchio.ext import routines
 import pymysql
 import datetime
+from gambling import gamble
 
 
 con = pymysql.connect(
@@ -290,6 +291,26 @@ class Bot(commands.Bot):
                     f"{ctx.author.mention} you are rank #{count} on the potato leaderboard with {i[1]} potatoes"
                 )
             count += 1
+
+    @commands.command()
+    async def gamble(self, ctx: commands.Context, game: str, amount: int):
+        cur.execute(
+            f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+        )
+        potatoes = cur.fetchone()
+        try:
+            if int(potatoes[0]) >= amount:
+                cur.execute(
+                    f"UPDATE Economy SET Potatoes = Potatoes - {amount} WHERE TwitchID = {ctx.message.author.id}"
+                )
+                con.commit()
+        except:
+            await ctx.send(
+                f"{ctx.message.author.mention}It seems you might have less than {amount} potatoes, check your balance and try again!"
+            )
+
+        if str(game).lower() == "rng":
+            await ctx.send(f"{gamble.getRng}")
 
     @commands.command()
     async def help(self, ctx: commands.Context):
