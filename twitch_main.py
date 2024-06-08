@@ -310,7 +310,7 @@ class Bot(commands.Bot):
             )
 
         if str(game).lower() == "rng":
-            await ctx.send(f"{gamble.getRng}")
+            await ctx.send(f"{gamble.getRng()}")
 
     @commands.command()
     async def help(self, ctx: commands.Context):
