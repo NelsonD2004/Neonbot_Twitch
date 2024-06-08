@@ -333,7 +333,6 @@ class Bot(commands.Bot):
         for command in self.commands:
             commands_msg = "{}, {}".format(commands_msg, "!{}".format(command))
         commands_msg = commands_msg[2:]
-        await ctx.message.author.send("Hello!")
         await ctx.send(
             f"""{ctx.message.author.mention} {commands_msg} || To earn potatos (stream currency) just chat!"""
         )
