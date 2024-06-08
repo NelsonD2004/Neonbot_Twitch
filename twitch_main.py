@@ -310,7 +310,7 @@ class Bot(commands.Bot):
                 f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
             )
 
-        if str(game).lower() is "rng":
+        if str(game).lower() == "rng":
             await ctx.send(f"{rngOdds}")
 
     @commands.command()
