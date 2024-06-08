@@ -306,7 +306,7 @@ class Bot(commands.Bot):
                 con.commit()
         except:
             await ctx.send(
-                f"{ctx.message.author.mention}It seems you might have less than {amount} potatoes, check your balance and try again!"
+                f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
             )
 
         if str(game).lower() == "rng":
