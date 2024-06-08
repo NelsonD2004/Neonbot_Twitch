@@ -295,32 +295,36 @@ class Bot(commands.Bot):
     @commands.command(aliases=["g"])
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.user)
     async def gamble(self, ctx: commands.Context, amount: int):
-        rngOdds = random.choices(population=["Win", "Lose"])
-        cur.execute(
-            f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
-        )
-        potatoes = cur.fetchone()
-        try:
-            if int(potatoes[0]) >= amount:
+        live = await bot.fetch_streams(user_ids=["803300101"], type="live")
+        if live:
+            rngOdds = random.choices(population=["Win", "Lose"])
+            cur.execute(
+                f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+            )
+            potatoes = cur.fetchone()
+            try:
+                if int(potatoes[0]) >= amount:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes - {amount} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+            except:
+                await ctx.send(
+                    f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
+                )
+
+            if rngOdds[0] == "Win":
+                await ctx.send(
+                    f"{ctx.message.author.mention} YOU WIN! {amount * 2} potatoes have been added to your account."
+                )
                 cur.execute(
-                    f"UPDATE Economy SET Potatoes = Potatoes - {amount} WHERE TwitchID = {ctx.message.author.id}"
+                    f"UPDATE Economy SET Potatoes = Potatoes + {amount * 2} WHERE TwitchID = {ctx.message.author.id}"
                 )
                 con.commit()
-        except:
-            await ctx.send(
-                f"{ctx.message.author.mention} It seems you might have less than {amount} potatoes, check your balance and try again!"
-            )
-
-        if rngOdds[0] == "Win":
-            await ctx.send(
-                f"{ctx.message.author.mention} YOU WIN! {amount * 2} potatoes have been added to your account."
-            )
-            cur.execute(
-                f"UPDATE Economy SET Potatoes = Potatoes + {amount * 2} WHERE TwitchID = {ctx.message.author.id}"
-            )
-            con.commit()
+            else:
+                await ctx.send(f"{ctx.message.author.mention} You Lost! (Womp Womp)")
         else:
-            await ctx.send(f"{ctx.message.author.mention} You Lost! (Womp Womp)")
+            await ctx.send("You must wait until tatox3 is online to use this.")
 
     async def event_command_error(self, ctx, error: Exception) -> None:
         if isinstance(error, commands.CommandOnCooldown):
