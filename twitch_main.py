@@ -302,10 +302,22 @@ class Bot(commands.Bot):
                 f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
             )
             potatoes = cur.fetchone()
+            cur.execute(
+                f"SELECT TwitchID FROM Gambling WHERE TwitchID = {ctx.message.author.id}"
+            )
+            existance = cur.fetchone()
             try:
+                if existance is None:
+                    cur.execute(
+                        f"INSERT INTO Gambling (TwitchID, DiscordID, Gambled, AmountGambled, AmountWon, AmountLost) VALUES ({ctx.message.author.id}, {0}, {0}, {0}, {0}, {0})"
+                    )
                 if int(potatoes[0]) >= amount:
                     cur.execute(
                         f"UPDATE Economy SET Potatoes = Potatoes - {amount} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+                    cur.execute(
+                        f"UPDATE Gambling SET Gambled = Gambled + {1}, AmountGambled = AmountGambled + {amount} WHERE TwitchID = {ctx.message.author.id}"
                     )
                     con.commit()
             except:
@@ -314,15 +326,24 @@ class Bot(commands.Bot):
                 )
 
             if rngOdds[0] == "Win":
+                payout = amount * 2
                 await ctx.send(
-                    f"{ctx.message.author.mention} YOU WIN! {amount * 2} potatoes have been added to your account."
+                    f"{ctx.message.author.mention} YOU WIN! {payout} potatoes have been added to your account."
                 )
                 cur.execute(
-                    f"UPDATE Economy SET Potatoes = Potatoes + {amount * 2} WHERE TwitchID = {ctx.message.author.id}"
+                    f"UPDATE Gambling SET AmountWon = AmountWon + {payout} WHERE TwitchID = {ctx.message.author.id}"
+                )
+                con.commit()
+                cur.execute(
+                    f"UPDATE Economy SET Potatoes = Potatoes + {payout} WHERE TwitchID = {ctx.message.author.id}"
                 )
                 con.commit()
             else:
                 await ctx.send(f"{ctx.message.author.mention} You Lost! (Womp Womp)")
+                cur.execute(
+                    f"UPDATE Gambling SET AmountLost = AmountLost + {amount} WHERE TwitchID = {ctx.message.author.id}"
+                )
+                con.commit()
         else:
             await ctx.send("You must wait until tatox3 is online to use this.")
 
