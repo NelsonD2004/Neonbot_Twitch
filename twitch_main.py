@@ -306,7 +306,7 @@ class Bot(commands.Bot):
                 f"SELECT TwitchID FROM Gambling WHERE TwitchID = {ctx.message.author.id}"
             )
             existance = cur.fetchone()
-            if int(potatoes[0]) and int(potatoes[0]) >= amount:
+            if int(potatoes[0]) and int(potatoes[0]) >= amount and amount > 1:
                 try:
                     if existance is None:
                         cur.execute(
@@ -349,7 +349,7 @@ class Bot(commands.Bot):
                     con.commit()
             else:
                 await ctx.send(
-                    "You have less potatoes than what you want to gamble, stop cheating."
+                    "You must bet more than 1 potato. Or you bet more than you have."
                 )
         else:
             await ctx.send("You must wait until tatox3 is online to use this.")
