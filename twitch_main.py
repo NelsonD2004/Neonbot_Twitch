@@ -348,7 +348,11 @@ class Bot(commands.Bot):
                     )
                     con.commit()
             else:
-                await ctx.send("You must wait until tatox3 is online to use this.")
+                await ctx.send(
+                    "You have less potatoes than what you want to gamble, stop cheating."
+                )
+        else:
+            await ctx.send("You must wait until tatox3 is online to use this.")
 
     async def event_command_error(self, ctx, error: Exception) -> None:
         if isinstance(error, commands.CommandOnCooldown):
