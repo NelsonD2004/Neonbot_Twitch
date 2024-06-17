@@ -275,7 +275,7 @@ class Bot(commands.Bot):
                 )
                 con.commit()
                 cur.execute(
-                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{mashup}", "No")'
+                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{ctx.message.author.name} switches the mashup to {mashup}", "No")'
                 )
                 con.commit()
                 await ctx.send(
