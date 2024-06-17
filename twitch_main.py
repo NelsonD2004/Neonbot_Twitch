@@ -261,7 +261,7 @@ class Bot(commands.Bot):
 
     @commands.command()
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
-    async def mashup(self, ctx: commands.Context, *, mashup):
+    async def mashuprec(self, ctx: commands.Context, *, mashup):
 
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
