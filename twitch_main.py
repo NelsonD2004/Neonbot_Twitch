@@ -269,21 +269,55 @@ class Bot(commands.Bot):
         )
         potatoes = cur.fetchone()
         if live:
-            if int(potatoes[0]) >= 200:
-                cur.execute(
-                    f"UPDATE Economy SET Potatoes = Potatoes - {200} WHERE TwitchID = {ctx.message.author.id}"
-                )
-                con.commit()
-                cur.execute(
-                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{ctx.message.author.name} switches the mashup to {mashup}", "No")'
-                )
-                con.commit()
-                await ctx.send(
-                    f"{ctx.message.author.mention} your mashup change has been queued."
-                )
+            if str(mashup).lower() in [
+                "unravel",
+                "bluebird",
+                "ado",
+                "strangers",
+                "doki miki diary",
+                "evil empire",
+                "lofi",
+                "cotton eye joe",
+                "fluffing a duck",
+                "Spongebob",
+                "dimrain47",
+                "opening 3 instrumental",
+                "minecraft",
+                "depressed",
+                "dubstep",
+                "opening 3",
+                "gigachad",
+                "cant hang man",
+                "revenge",
+                "artic lights",
+                "blaster squared",
+                "subway shiawase",
+                "au5",
+                "hunger games",
+                "crazy frog",
+                "redstone",
+                "gold",
+                "never let me go",
+            ]:
+                if int(potatoes[0]) >= 200:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes - {200} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+                    cur.execute(
+                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{ctx.message.author.name} switches the mashup to {mashup}", "No")'
+                    )
+                    con.commit()
+                    await ctx.send(
+                        f"{ctx.message.author.mention} your mashup change has been queued."
+                    )
+                else:
+                    await ctx.send(
+                        f"{ctx.message.author.mention} make sure that you have 200 potatoes."
+                    )
             else:
                 await ctx.send(
-                    f"{ctx.message.author.mention} make sure to include what mashup you want !mashup <mashup>, and that you have 200 potatoes."
+                    f"{ctx.message.author.mention} make sure to include a proper mashup from !mashuplist"
                 )
 
         else:
@@ -293,6 +327,39 @@ class Bot(commands.Bot):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"{error}")
             return
+
+
+    @commands.command()
+    async def mashuplist(self, ctx: commands.Context):
+        await ctx.send(f"{ctx.message.author.name}:                
+                unravel,
+                bluebird,
+                ado,
+                strangers,
+                doki miki diary,
+                evil empire,
+                lofi,
+                cotton eye joe,
+                fluffing a duck,
+                Spongebob,
+                dimrain47,
+                opening 3 instrumental,
+                minecraft,
+                depressed,
+                dubstep,
+                opening 3,
+                gigachad,
+                cant hang man,
+                revenge,
+                artic lights,
+                blaster squared,
+                subway shiawase,
+                au5,
+                hunger games,
+                crazy frog,
+                redstone,
+                gold,
+                never let me go")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
