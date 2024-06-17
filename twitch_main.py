@@ -260,6 +260,41 @@ class Bot(commands.Bot):
             return
 
     @commands.command()
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
+    async def mashup(self, ctx: commands.Context, *, mashup):
+
+        live = await bot.fetch_streams(user_ids=["803300101"], type="live")
+        cur.execute(
+            f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+        )
+        potatoes = cur.fetchone()
+        if live:
+            if int(potatoes[0]) >= 200:
+                cur.execute(
+                    f"UPDATE Economy SET Potatoes = Potatoes - {200} WHERE TwitchID = {ctx.message.author.id}"
+                )
+                con.commit()
+                cur.execute(
+                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{mashup}", "No")'
+                )
+                con.commit()
+                await ctx.send(
+                    f"{ctx.message.author.mention} your mashup change has been queued."
+                )
+            else:
+                await ctx.send(
+                    f"{ctx.message.author.mention} make sure to include what mashup you want !mashup <mashup>, and that you have 200 potatoes."
+                )
+
+        else:
+            await ctx.send("You cannot do this command while Tatox3 is offline.")
+
+    async def event_command_error(self, ctx, error: Exception) -> None:
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"{error}")
+            return
+
+    @commands.command()
     async def bal(self, ctx: commands.Context):
         cur.execute(
             f"SELECT Potatoes FROM Economy WHERE TwitchID = '{ctx.message.author.id}'"
