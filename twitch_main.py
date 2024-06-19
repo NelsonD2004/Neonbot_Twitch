@@ -191,82 +191,82 @@ class Bot(commands.Bot):
     @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
-            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
+            "The current voices you can use for !tts are (henry, kratos, mrbeast, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
         )
 
-    # @commands.command()
-    # @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
-    # async def tts(self, ctx: commands.Context, voice, *, message):
+    @commands.command()
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
+    async def tts(self, ctx: commands.Context, voice, *, message):
 
-    # live = await bot.fetch_streams(user_ids=["803300101"], type="live")
-    # cur.execute(
-    # f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
-    # )
-    # potatoes = cur.fetchone()
-    # if live:
-    # if str(voice).lower() not in [
-    # "henry",
-    # "mrbeast",
-    # "evw",
-    # "kratos",
-    # "aeonair",
-    # "npesta",
-    # "doggie",
-    # "vit12",
-    # "henry2",
-    # "goku",
-    # "robtop",
-    # "zeronium",
-    # "villager",
-    # "luffy",
-    # "ncssong",
-    # "sakupen",
-    # "sonicblaster",
-    # "miku",
-    # "luckyns",
-    # "mario",
-    # "colon",
-    # "vsauce",
-    # ]:
-    #    if int(potatoes[0]) >= 100:
-    #        cur.execute(
-    #            f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
-    #        )
-    #        con.commit()
-    #        cur.execute(
-    #            f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No")'
-    #        )
-    #        con.commit()
-    #        cur.execute(f"SELECT * FROM TTS")
-    #        queue = len(cur.fetchall())
-    #        await ctx.send(
-    #            f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
-    #        )
-    #    else:
-    #        await ctx.send(
-    #            f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
-    #        )
-    # else:
-    #    if message and int(potatoes[0]) >= 100:
-    #        cur.execute(
-    #            f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
-    #        )
-    #        con.commit()
-    #        cur.execute(
-    #            f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "{voice}")'
-    #        )
-    #        con.commit()
-    #        cur.execute(f"SELECT * FROM TTS")
-    #        queue = len(cur.fetchall())
-    #        await ctx.send(
-    #            f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
-    #        )
-    #    else:
-    #        await ctx.send(
-    #            f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
-    #        )
-    # else:
-    # await ctx.send("You cannot do this command while Tatox3 is offline.")
+        live = await bot.fetch_streams(user_ids=["803300101"], type="live")
+        cur.execute(
+            f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+        )
+        potatoes = cur.fetchone()
+        if live:
+            if str(voice).lower() not in [
+                "henry",
+                "mrbeast",
+                "evw",
+                "kratos",
+                "aeonair",
+                "npesta",
+                "doggie",
+                "vit12",
+                "henry2",
+                "goku",
+                "robtop",
+                "zeronium",
+                "villager",
+                "luffy",
+                "ncssong",
+                "sakupen",
+                "sonicblaster",
+                "miku",
+                "luckyns",
+                "mario",
+                "colon",
+                "vsauce",
+            ]:
+                if int(potatoes[0]) >= 100:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+                    cur.execute(
+                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No")'
+                    )
+                    con.commit()
+                    cur.execute(f"SELECT * FROM TTS")
+                    queue = len(cur.fetchall())
+                    await ctx.send(
+                        f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+                    )
+                else:
+                    await ctx.send(
+                        f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
+                    )
+            else:
+                if message and int(potatoes[0]) >= 100:
+                    cur.execute(
+                        f"UPDATE Economy SET Potatoes = Potatoes - {100} WHERE TwitchID = {ctx.message.author.id}"
+                    )
+                    con.commit()
+                    cur.execute(
+                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "{voice}")'
+                    )
+                    con.commit()
+                    cur.execute(f"SELECT * FROM TTS")
+                    queue = len(cur.fetchall())
+                    await ctx.send(
+                        f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+                    )
+                else:
+                    await ctx.send(
+                        f"{ctx.message.author.mention} make sure include what TTS message you want to send '!tts <voice> <message>' and that you have 100 potatoes"
+                    )
+        else:
+            await ctx.send("You cannot do this command while Tatox3 is offline.")
 
     async def event_command_error(self, ctx, error: Exception) -> None:
         if isinstance(error, commands.CommandOnCooldown):
