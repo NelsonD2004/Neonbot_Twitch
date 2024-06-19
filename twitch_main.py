@@ -222,7 +222,8 @@ class Bot(commands.Bot):
                 "sakupen",
                 "sonicblaster",
                 "miku",
-                "luckyns" "mario",
+                "luckyns",
+                "mario",
                 "colon",
                 "vsauce",
             ]:
