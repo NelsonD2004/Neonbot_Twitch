@@ -226,6 +226,7 @@ class Bot(commands.Bot):
                 "mario",
                 "colon",
                 "vsauce",
+                "luffy",
             ]:
                 if int(potatoes[0]) >= 100:
                     cur.execute(
