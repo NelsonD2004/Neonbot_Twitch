@@ -191,7 +191,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
-            "The current voices you can use for !tts are (henry, kratos, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
+            "The current voices you can use for !tts are (henry, kratos, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce, enigma, life and death, wicked, like that, spin me)"
         )
 
     @commands.command()
@@ -226,6 +226,11 @@ class Bot(commands.Bot):
                 "mario",
                 "colon",
                 "vsauce",
+                "enigma",
+                "life and death",
+                "wicked",
+                "like that",
+                "spin me",
             ]:
                 if int(potatoes[0]) >= 100:
                     cur.execute(
