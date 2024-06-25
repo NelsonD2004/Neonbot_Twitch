@@ -349,7 +349,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def mashuplist(self, ctx: commands.Context):
         await ctx.send(
-            f"{ctx.message.author.name}: unravel, bluebird, ado, strangers, doki miki diary, evil empire, lofi, cotton eye joe, fluffing a duck, Spongebob, dimrain47, opening 3 instrumental, minecraft, depressed, dubstep, opening 3, gigachad, cant hang man, revenge, artic lights, blaster squared, subway shiawase, au5, hunger games, crazy frog, redstone, gold, never let me go"
+            f"{ctx.message.author.name}: spin me, like that, wicked, enigma, life and death, gaga blaster, unravel, bluebird, ado, strangers, doki miki diary, evil empire, lofi, cotton eye joe, fluffing a duck, Spongebob, dimrain47, opening 3 instrumental, minecraft, depressed, dubstep, opening 3, gigachad, cant hang man, revenge, artic lights, blaster squared, subway shiawase, au5, hunger games, crazy frog, redstone, gold, never let me go"
         )
 
     @commands.command()
