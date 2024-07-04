@@ -292,7 +292,7 @@ class Bot(commands.Bot):
                 "lofi",
                 "cotton eye joe",
                 "fluffing a duck",
-                "Spongebob",
+                "spongebob",
                 "dimrain47",
                 "opening 3 instrumental",
                 "minecraft",
