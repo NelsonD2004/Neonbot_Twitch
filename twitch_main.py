@@ -81,6 +81,7 @@ class Bot(commands.Bot):
         print(f"Logged in as | {self.nick}")
         print(f"User id is | {self.user_id}")
         auto_stream_check.start()
+        monthly_check.start()
 
     async def event_message(self, message):
         global con
