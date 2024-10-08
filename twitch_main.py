@@ -14,6 +14,9 @@ con = pymysql.connect(
 
 cur = con.cursor()
 
+with open("mashups.txt", "r+") as file:
+    mashups = file.readline().replace(" ", "").split(",")
+
 
 @routines.routine(hours=12)
 async def monthly_check():
@@ -188,14 +191,14 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    # @commands.command()
+    @commands.command()
     async def voices(self, ctx: commands.Context):
         await ctx.send(
             "The current voices you can use for !tts are (henry, kratos, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
         )
 
-    # @commands.command()
-    # @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
+    @commands.command()
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def tts(self, ctx: commands.Context, voice, *, message):
 
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
@@ -272,8 +275,8 @@ class Bot(commands.Bot):
             await ctx.send(f"{error}")
             return
 
-    # @commands.command()
-    # @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
+    @commands.command()
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def mashupreq(self, ctx: commands.Context, *, mashup):
 
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
@@ -282,41 +285,7 @@ class Bot(commands.Bot):
         )
         potatoes = cur.fetchone()
         if live:
-            if str(mashup).lower() in [
-                "unravel",
-                "bluebird",
-                "ado",
-                "strangers",
-                "doki miki diary",
-                "evil empire",
-                "lofi",
-                "cotton eye joe",
-                "fluffing a duck",
-                "spongebob",
-                "dimrain47",
-                "opening 3 instrumental",
-                "minecraft",
-                "depressed",
-                "dubstep",
-                "opening 3",
-                "gigachad",
-                "cant hang man",
-                "revenge",
-                "artic lights",
-                "blaster squared",
-                "subway shiawase",
-                "au5",
-                "hunger games",
-                "crazy frog",
-                "redstone",
-                "gold",
-                "never let me go",
-                "enigma",
-                "life and death",
-                "wicked",
-                "like that",
-                "spin me",
-            ]:
+            if str(mashup).lower() in mashups:
                 if int(potatoes[0]) >= 200:
                     cur.execute(
                         f"UPDATE Economy SET Potatoes = Potatoes - {200} WHERE TwitchID = {ctx.message.author.id}"
@@ -346,11 +315,9 @@ class Bot(commands.Bot):
             await ctx.send(f"{error}")
             return
 
-    # @commands.command()
+    @commands.command()
     async def mashuplist(self, ctx: commands.Context):
-        await ctx.send(
-            f"{ctx.message.author.name}: spin me, like that, wicked, enigma, life and death, gaga blaster, unravel, bluebird, ado, strangers, doki miki diary, evil empire, lofi, cotton eye joe, fluffing a duck, Spongebob, dimrain47, opening 3 instrumental, minecraft, depressed, dubstep, opening 3, gigachad, cant hang man, revenge, artic lights, blaster squared, subway shiawase, au5, hunger games, crazy frog, redstone, gold, never let me go, enigma, life and death, wicked, like that , spin me"
-        )
+        await ctx.send(f"{ctx.message.author.name}: {mashups}")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
@@ -385,8 +352,8 @@ class Bot(commands.Bot):
                 )
             count += 1
 
-    # @commands.command(aliases=["g"])
-    # @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.user)
+    @commands.command(aliases=["g"])
+    @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.user)
     async def gamble(self, ctx: commands.Context, amount: int):
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         if live:
