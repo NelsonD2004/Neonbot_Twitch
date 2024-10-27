@@ -3,13 +3,17 @@ from twitchio.ext import routines
 import pymysql
 import datetime
 import random
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 con = pymysql.connect(
-    host="db-mfl-01.sparkedhost.us",
-    port=3306,
-    user="u109224_Krhr5CV2M2",
-    passwd="LzwM5tsReqzPH^1I1+@@XA2A",
-    database="s109224_Bot",
+    host=os.getenv("HOST"),
+    port=int(os.getenv("PORT")),
+    user=os.getenv("USER"),
+    passwd=os.getenv("PASSWORD"),
+    database=os.getenv("DATABASE"),
 )
 
 cur = con.cursor()
@@ -73,7 +77,7 @@ async def auto_stream_check():
 class Bot(commands.Bot):
     def __init__(self):
         super().__init__(
-            token="nqnxpafi1e23a43l0phvvfue0w58te",
+            token=os.getenv("BOTTOKEN"),
             prefix="!",
             initial_channels=["Tatox3_"],
             nick="NeonBot",
@@ -91,11 +95,11 @@ class Bot(commands.Bot):
         if con is None:
             try:
                 con = pymysql.connect(
-                    host="db-mfl-01.sparkedhost.us",
-                    port=3306,
-                    user="u109224_Krhr5CV2M2",
-                    passwd="LzwM5tsReqzPH^1I1+@@XA2A",
-                    database="s109224_Bot",
+                    host=os.getenv("HOST"),
+                    port=int(os.getenv("PORT")),
+                    user=os.getenv("USER"),
+                    passwd=os.getenv("PASSWORD"),
+                    database=os.getenv("DATABASE"),
                 )
 
                 cur = con.cursor()
