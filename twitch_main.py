@@ -11,7 +11,7 @@ load_dotenv()
 con = pymysql.connect(
     host=os.getenv("HOST"),
     port=int(os.getenv("PORT")),
-    user=os.getenv("USER"),
+    user=os.getenv("DBUSER"),
     passwd=os.getenv("PASSWORD"),
     database=os.getenv("DATABASE"),
 )
@@ -97,7 +97,7 @@ class Bot(commands.Bot):
                 con = pymysql.connect(
                     host=os.getenv("HOST"),
                     port=int(os.getenv("PORT")),
-                    user=os.getenv("USER"),
+                    user=os.getenv("DBUSER"),
                     passwd=os.getenv("PASSWORD"),
                     database=os.getenv("DATABASE"),
                 )
