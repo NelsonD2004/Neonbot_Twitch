@@ -18,9 +18,6 @@ con = pymysql.connect(
 
 cur = con.cursor()
 
-with open("mashups.txt", "r+") as file:
-    mashups = file.readline().replace(" ", "").split(",")
-
 
 @routines.routine(hours=12)
 async def monthly_check():
@@ -210,7 +207,7 @@ class Bot(commands.Bot):
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
         )
         potatoes = cur.fetchone()
-        if live:
+        if not live:
             if str(voice).lower() not in [
                 "henry",
                 "evw",
@@ -282,6 +279,8 @@ class Bot(commands.Bot):
     @commands.command()
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def mashupreq(self, ctx: commands.Context, *, mashup):
+        with open("mashups.txt", "r+") as file:
+            mashups = file.readline().replace(" ", "").split(",")
 
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
@@ -321,7 +320,22 @@ class Bot(commands.Bot):
 
     @commands.command()
     async def mashuplist(self, ctx: commands.Context):
-        await ctx.send(f"{ctx.message.author.name}: {mashups}")
+        with open("mashups.txt", "r+") as file:
+            content = file.readline()
+
+            if len(content) % 499 == 0:
+                messages = len(content) // 499
+            else:
+                messages = (len(content) // 499) + 1
+
+            await ctx.send(
+                f"{ctx.message.author.mention} here are the current mashups:"
+            )
+            for i in range(1, messages + 1, 1):
+                if i == 1:
+                    await ctx.send(f"{content[:499]}")
+                else:
+                    await ctx.send(f"{content[500:(i*499) + (1 * (i - 1))]}")
 
     @commands.command()
     async def bal(self, ctx: commands.Context):
@@ -333,14 +347,44 @@ class Bot(commands.Bot):
             f"{ctx.message.author.mention}'s current potato balance is {result[0]}"
         )
 
+    @commands.command(aliases=["milton"])
+    @commands.cooldown(1, 36000, bucket=commands.Bucket.channel)
+    async def askmilton(self, ctx: commands.Context, *, message):
+        live = await bot.fetch_streams(user_ids=["803300101"], type="live")
+        if not live:
+            cur.execute(
+                f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
+            )
+            potatoes = cur.fetchone()
+            if int(potatoes[0]) >= 500:
+                cur.execute(
+                    f"UPDATE Economy SET Potatoes = Potatoes - {500} WHERE TwitchID = {ctx.message.author.id}"
+                )
+                con.commit()
+                cur.execute(
+                    f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice, Milton) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No", {1})'
+                )
+                con.commit()
+                cur.execute(f"SELECT * FROM TTS")
+                queue = len(cur.fetchall())
+                await ctx.send(
+                    f"{ctx.message.author.mention} your message has been added to the queue (#{queue})"
+                )
+            else:
+                await ctx.send(
+                    f"{ctx.message.author.mention} make sure include what message you want to ask '!milton <message>' and that you have 500 potatoes"
+                )
+
+    # VB-Audio Virtual Cable
+
     @commands.command(aliases=["lb"])
     async def leaderboard(self, ctx: commands.Context):
         cur.execute(
-            f"SELECT TwitchName, Potatoes FROM Economy ORDER BY Potatoes DESC LIMIT 5"
+            f"SELECT TwitchName, Potatoes FROM Economy ORDER BY Potatoes DESC LIMIT 6"
         )
         result = cur.fetchall()
         await ctx.send(
-            f"Potato Leaderboard | #1 {result[1][0]}: {result[1][1]} | #2 {result[2][0]}: {result[2][1]} | #3 {result[3][0]}: {result[3][1]} | #4 {result[4][0]}: {result[4][1]} | #5 {result[5][0]}: {result[5][1]}"
+            f"Potato Leaderboard | #1 {result[1][0]}: {result[1][1]:,} | #2 {result[2][0]}: {result[2][1]:,} | #3 {result[3][0]}: {result[3][1]:,} | #4 {result[4][0]}: {result[4][1]:,} | #5 {result[5][0]}: {result[5][1]:,}"
         )
 
     @commands.command()
