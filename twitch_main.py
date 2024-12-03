@@ -207,7 +207,7 @@ class Bot(commands.Bot):
             f"SELECT Potatoes FROM Economy WHERE TwitchID = {ctx.message.author.id}"
         )
         potatoes = cur.fetchone()
-        if not live:
+        if live:
             if str(voice).lower() not in [
                 "henry",
                 "evw",
