@@ -280,7 +280,7 @@ class Bot(commands.Bot):
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
     async def mashupreq(self, ctx: commands.Context, *, mashup):
         with open("mashups.txt", "r+") as file:
-            mashups = file.readline().replace(" ", "").split(",")
+            mashups = file.readline().split(",")
 
         live = await bot.fetch_streams(user_ids=["803300101"], type="live")
         cur.execute(
