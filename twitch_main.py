@@ -42,28 +42,28 @@ async def auto_stream_check():
         try:
             if str(latest[0]) == "False" and live[0].title == str(latest_title[0]):
                 cur.execute(
-                    f"UPDATE Live_Info SET Live = '{True}' WHERE Title = '{str(latest_title[0])}'"
+                    f'UPDATE Live_Info SET Live = "{True}" WHERE Title = "{str(latest_title[0])}"'
                 )
                 con.commit()
 
             if str(latest[0]) == "True" and live:
                 cur.execute(
-                    f"UPDATE Live_Info SET Title = '{live[0].title}' WHERE Title = '{str(latest_title[0])}'"
+                    f'UPDATE Live_Info SET Title = "{live[0].title}" WHERE Title = "{str(latest_title[0])}"'
                 )
                 con.commit()
                 cur.execute(
-                    f"UPDATE Live_Info SET Game = '{live[0].game_name}' WHERE Title = '{str(latest_title[0])}'"
+                    f'UPDATE Live_Info SET Game = "{live[0].game_name}" WHERE Title = "{str(latest_title[0])}"'
                 )
                 con.commit()
             else:
                 cur.execute(
-                    f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                    f'INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ("True", "{live[0].title}"", "{live[0].game_name}", "{live[0].started_at}", "False")'
                 )
                 con.commit()
         except Exception as e:
             print(e)
             cur.execute(
-                f"INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ('True', '{live[0].title}', '{live[0].game_name}', '{live[0].started_at}', 'False')"
+                f'INSERT INTO Live_Info (Live, Title, Game, Date, Noti) VALUES ("True", "{live[0].title}", "{live[0].game_name}", "{live[0].started_at}", "False")'
             )
             con.commit()
     else:
