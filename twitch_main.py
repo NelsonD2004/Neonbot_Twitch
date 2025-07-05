@@ -19,7 +19,7 @@ con = pymysql.connect(
 cur = con.cursor()
 
 
-@routines.routine(hours=11.9)
+@routines.routine(hours=12)
 async def monthly_check():
     day = datetime.date.today().day
     if day == 1:
