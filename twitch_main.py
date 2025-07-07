@@ -1,5 +1,5 @@
-from twitchio.ext import commands
 from twitchio.ext import routines
+from twitchio.ext import commands
 import pymysql
 import datetime
 import random
