@@ -192,11 +192,11 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    @commands.command()
-    async def voices(self, ctx: commands.Context):
-        await ctx.send(
-            "The current voices you can use for !tts are (henry, kratos, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
-        )
+    # @commands.command()
+    # async def voices(self, ctx: commands.Context):
+    # await ctx.send(
+    # "The current voices you can use for !tts are (henry, kratos, EVW, Aeonair, npesta, doggie, vit12, henry2, goku, robtop, zeronium, villager, luffy, ncssong, sakupen, sonicblaster, miku, luckyns mario, colon, vsauce)"
+    # )
 
     @commands.command()
     @commands.cooldown(rate=1, per=5, bucket=commands.Bucket.channel)
@@ -209,27 +209,8 @@ class Bot(commands.Bot):
         potatoes = cur.fetchone()
         if live:
             if str(voice).lower() not in [
-                "henry",
-                "evw",
-                "kratos",
-                "aeonair",
-                "npesta",
-                "doggie",
-                "vit12",
-                "henry2",
-                "goku",
-                "robtop",
-                "zeronium",
-                "villager",
-                "luffy",
-                "ncssong",
-                "sakupen",
-                "sonicblaster",
-                "miku",
-                "luckyns",
-                "mario",
-                "colon",
-                "vsauce",
+                "SKSJHIWAUJ",
+                "SISjsar",
             ]:
                 if int(potatoes[0]) >= 100:
                     cur.execute(
@@ -237,7 +218,7 @@ class Bot(commands.Bot):
                     )
                     con.commit()
                     cur.execute(
-                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{message}", "No")'
+                        f'INSERT INTO TTS (TwitchName, TwitchID, Message, Voice) VALUES ("{ctx.message.author.name}", {ctx.message.author.id}, "{voice}{message}", "No")'
                     )
                     con.commit()
                     cur.execute(f"SELECT * FROM TTS")
